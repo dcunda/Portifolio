@@ -423,6 +423,20 @@
         .project__link svg { width: 20px; height: 20px; }
         .project__link:hover { color: #fff; gap: 14px; }
 
+        /* Status "Em desenvolvimento" (âmbar) */
+        .status--dev { background: rgba(251, 191, 36, .1); border-color: rgba(251, 191, 36, .25); color: #fbbf24; }
+        .status--dev .status__dot { background: #fbbf24; animation-name: ping-amber; }
+        @keyframes ping-amber { 0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, .55); } 70%, 100% { box-shadow: 0 0 0 9px rgba(251, 191, 36, 0); } }
+
+        /* Card largo (Mandato): ocupa a linha toda; no desktop, prévia à esquerda e texto à direita */
+        .projects-grid > .project-wrap--wide { grid-column: 1 / -1; }
+        @media (min-width: 900px) {
+            .project--wide { flex-direction: row; }
+            .project--wide .browser { flex: 0 0 55%; align-self: center; margin: 21px 0 21px 24px; }
+            .project--wide .project__body { justify-content: center; padding: 32px 40px 32px 36px; }
+            .project--wide .project__link { margin-top: 0; }
+        }
+
         /* 04. Trajetória (linha do tempo que acende ao rolar) */
         .timeline { position: relative; max-width: 1024px; margin: 0 auto; }
         .timeline__spine { position: absolute; top: 0; bottom: 0; left: 9px; width: 2px; border-radius: 2px; background: rgba(255, 255, 255, .1); overflow: hidden; }
@@ -774,6 +788,33 @@
                                 </p>
                                 <a href="https://ministerioorigem.com" target="_blank" rel="noopener" class="project__link">
                                     <span>Acessar Aplicação</span><span class="sr-only">: Ministério Origem</span>
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                </a>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- Mandato (jogo): card largo, ocupa a linha inteira no desktop -->
+                    <div class="project-wrap--wide" data-reveal>
+                        <article class="glass-card project project--wide" data-tilt>
+                            <span class="project__accent" aria-hidden="true"></span>
+                            <div class="browser" aria-hidden="true">
+                                <div class="browser__bar"><i></i><i></i><i></i><span class="browser__url">mandatogame.vercel.app</span></div>
+                                <div class="browser__view" data-shot="https://mandatogame.vercel.app" style="--a1:rgba(0,102,255,.38);--a2:rgba(188,19,254,.3)">
+                                    <span class="browser__scan"></span>
+                                    <span class="browser__word">mandato</span>
+                                </div>
+                            </div>
+                            <div class="project__body">
+                                <div class="project__head">
+                                    <h3 class="project__title">Mandato</h3>
+                                    <span class="status status--dev"><span class="status__dot"></span>Em desenvolvimento</span>
+                                </div>
+                                <p class="project__desc">
+                                    Simulador geopolítico em turnos: você governa o Brasil a partir da posse de 2027. A cada mês, decide sobre Congresso, ministros, economia, alianças e guerra, e o mundo reage às suas escolhas. Roda direto no navegador.
+                                </p>
+                                <a href="https://mandatogame.vercel.app" target="_blank" rel="noopener" class="project__link">
+                                    <span>Jogar no navegador</span><span class="sr-only">: Mandato</span>
                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                                 </a>
                             </div>
@@ -1255,7 +1296,8 @@
                 card.style.setProperty('--y', y + 'px');
                 if (tilt) {
                     const px = x / r.width - 0.5, py = y / r.height - 0.5;
-                    card.style.transform = `perspective(1000px) rotateX(${(-py * 7).toFixed(2)}deg) rotateY(${(px * 9).toFixed(2)}deg) translateY(-6px)`;
+                    const k = Math.min(1, 600 / r.width); // cards largos inclinam menos
+                    card.style.transform = `perspective(1000px) rotateX(${(-py * 7 * k).toFixed(2)}deg) rotateY(${(px * 9 * k).toFixed(2)}deg) translateY(-6px)`;
                 }
             });
             if (tilt) card.addEventListener('pointerleave', () => { card.style.transform = ''; });
